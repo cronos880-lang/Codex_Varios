@@ -1,6 +1,8 @@
 # Secuencia automática para Vigor VS1-14MT
 
-Este programa de proceso coordina el noyo, la expulsión y el permiso de cierre de la inyectora. `secuencia-vigor.txt` contiene las redes en mnemónicos Vigor para reproducirlas en **Ladder Master S**, en el orden indicado. Cada bloque separado por una línea en blanco es una red. Las líneas precedidas por `#` son títulos para la lectura. El listado es texto fuente. La compilación en Ladder Master S y las pruebas con la CPU y la hidráulica reales quedan pendientes.
+El [plano Ladder gráfico](ladder-grafico-vigor.pdf) representa las **89 redes** del programa, con contactos, ramas, temporizadores y bobinas. Las salidas físicas están juntas en la última página.
+
+`secuencia-vigor.txt` contiene el mismo programa en mnemónicos Vigor para reproducirlo en **Ladder Master S**, en el orden indicado. Cada bloque separado por una línea en blanco es una red. Las líneas precedidas por `#` son títulos para la lectura. La entrega incluye el plano gráfico y el texto fuente. Quedan pendientes el proyecto editable `.PVS`, la compilación en Ladder Master S y las pruebas con la CPU y la hidráulica reales.
 
 ## Entradas y salidas
 
