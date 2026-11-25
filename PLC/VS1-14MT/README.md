@@ -2,7 +2,9 @@
 
 El [plano Ladder gráfico](ladder-grafico-vigor.pdf) representa las **89 redes** del programa, con contactos, ramas, temporizadores y bobinas. Las salidas físicas están juntas en la última página.
 
-`secuencia-vigor.txt` contiene el mismo programa en mnemónicos Vigor para reproducirlo en **Ladder Master S**, en el orden indicado. Cada bloque separado por una línea en blanco es una red. Las líneas precedidas por `#` son títulos para la lectura. La entrega incluye el plano gráfico y el texto fuente. Quedan pendientes el proyecto editable `.PVS`, la compilación en Ladder Master S y las pruebas con la CPU y la hidráulica reales.
+`secuencia-vigor.txt` contiene el mismo programa en mnemónicos Vigor para reproducirlo en **Ladder Master S**, en el orden indicado. Cada bloque separado por una línea en blanco es una red. Las líneas precedidas por `#` son títulos para la lectura.
+
+El [proyecto editable de revisión para VS1](secuencia-vigor-vs1.PVS) contiene las **88 redes de trabajo**. Está generado a partir de símbolos observados en archivos guardados por Ladder Master S. Tiene una fila final reservada para `END`, que debe añadirse en el editor si el compilador no la incorpora. Quedan pendientes la apertura, la compilación y la reapertura en Ladder Master S, además de la prueba en banco. Mantén el PLC desconectado durante la revisión del proyecto.
 
 ## Entradas y salidas
 
