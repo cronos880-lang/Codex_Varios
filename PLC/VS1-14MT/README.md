@@ -4,7 +4,7 @@ El [plano Ladder gráfico](ladder-grafico-vigor.pdf) representa las **89 redes**
 
 `secuencia-vigor.txt` contiene el mismo programa en mnemónicos Vigor para reproducirlo en **Ladder Master S**, en el orden indicado. Cada bloque separado por una línea en blanco es una red. Las líneas precedidas por `#` son títulos para la lectura.
 
-El [proyecto editable de revisión para VS1](secuencia-vigor-vs1.PVS) contiene las **88 redes de trabajo**. Está generado a partir de símbolos observados en archivos guardados por Ladder Master S. Tiene una fila final reservada para `END`, que debe añadirse en el editor si el compilador no la incorpora. Quedan pendientes la apertura, la compilación y la reapertura en Ladder Master S, además de la prueba en banco. Mantén el PLC desconectado durante la revisión del proyecto.
+El [proyecto editable de revisión para VS1](secuencia-vigor-vs1.PVS) contiene las **88 redes de trabajo**. Está generado a partir de símbolos observados en archivos guardados por Ladder Master S. Tiene una fila final reservada para `END`, que debe añadirse en el editor si el compilador no la incorpora. El proyecto de la revisión anterior abrió y compiló en el editor. Esta revisión corrige Y2/Y3 y T5 y requiere volver a compilar en Ladder Master S antes de la prueba en banco. Mantén el PLC desconectado durante la revisión del proyecto.
 
 ## Entradas y salidas
 
@@ -18,8 +18,8 @@ El [proyecto editable de revisión para VS1](secuencia-vigor-vs1.PVS) contiene l
 | X5 | Pulso de orden de expulsión atrás, procedente de la máquina |
 | Y0 | K3, noyo salir |
 | Y1 | K4, noyo entrar |
-| Y2 | K5, expulsión entrar |
-| Y3 | K6, expulsión salir |
+| Y2 | K5, expulsión salir |
+| Y3 | K6, expulsión entrar |
 | Y4 | K8, habilitar presión |
 | Y5 | Sexta salida, permiso de cierre hacia la inyectora |
 
@@ -31,14 +31,14 @@ El micro de expulsión atrás también llega a la inyectora por su circuito prop
 |---|---|---|
 | M10 | Espera sin movimiento | Molde abierto, noyo y expulsión dentro y nuevo flanco de X4 |
 | M11 | K3 y K8 | X1 confirma noyo fuera y X0 se libera |
-| M12 | K6 y K8 durante el avance. K6 se mantiene después de descargar K8 | X2 se ha liberado y llega el flanco de X5 tras la recogida |
+| M12 | K5 y K8 durante el avance. K5 se mantiene después de descargar K8 | X2 se ha liberado y llega el flanco de X5 tras la recogida |
 | M13 | K4 y K8 | X0 confirma noyo dentro y X1 se libera. La expulsión sigue adelantada |
-| M14 | K5 y K8 | X2 confirma expulsión atrás, con el noyo todavía dentro |
+| M14 | K6 y K8 | X2 confirma expulsión atrás, con el noyo todavía dentro |
 | M15 | Y5, con los dos micros dentro | Se detecta molde dejando de estar abierto y, después, nueva apertura |
 
 X4 y X5 son pulsos de aproximadamente un segundo. El programa memoriza su efecto al cambiar de paso. Acepta X4 con el molde abierto y la base confirmada. Acepta X5 durante el avance o la espera de recogida, cuando X2 ya se ha liberado. Arrancar o salir de un fallo exige una nueva orden. El cierre se habilita después de completar la secuencia, permanece durante la pérdida normal de X3 al cerrar y se retira en la reapertura. La máquina conserva la comprobación del micro de expulsión atrás en su propia lógica. Verificar estos tiempos de intercambio con la interfaz real.
 
-En la espera del robot, se mantiene K6 hasta recibir X5. El temporizador de avance descarga K8 sin asignar una posición de expulsión fuera. La posición durante esta fase depende del circuito hidráulico. Confirmar que se mantiene al descargar y que la presión de K8 puede habilitarse en el mismo scan que la válvula de movimiento. El programa aplica una sola orden de movimiento por paso. Verificar también la conmutación y el tiempo de liberación físicos de los relés entre pasos.
+En la espera del robot, se mantiene K5 hasta recibir X5. T5 está asociado a Y2 (K5) y descarga K8 sin asignar una posición de expulsión fuera. La posición durante esta fase depende del circuito hidráulico. Confirmar que se mantiene al descargar y que la presión de K8 puede habilitarse en el mismo scan que la válvula de movimiento. El programa aplica una sola orden de movimiento por paso. Verificar también la conmutación y el tiempo de liberación físicos de los relés entre pasos.
 
 ## Configuración inicial y diagnóstico
 

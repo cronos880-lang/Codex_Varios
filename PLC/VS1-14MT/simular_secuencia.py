@@ -88,17 +88,17 @@ class TestSecuencia(unittest.TestCase):
     def salida(self):
         self.scan(X4=1, expect={'Y0', 'Y4'})
         self.scan(X0=0, X4=0, expect={'Y0', 'Y4'})
-        self.scan(X1=1, expect={'Y3', 'Y4'})
+        self.scan(X1=1, expect={'Y2', 'Y4'})
 
     def volver_noyo(self):
         self.salida()
-        self.scan(X2=0, expect={'Y3', 'Y4'})
+        self.scan(X2=0, expect={'Y2', 'Y4'})
         self.scan(X5=1, expect={'Y1', 'Y4'})
         self.scan(X1=0, X5=0, expect={'Y1', 'Y4'})
 
     def terminar(self):
         self.volver_noyo()
-        self.scan(X0=1, expect={'Y2', 'Y4'})
+        self.scan(X0=1, expect={'Y3', 'Y4'})
         self.scan(X2=1, expect={'Y5'})
 
     def test_ciclo_y_siguiente_apertura_con_x4_en_el_mismo_scan(self):
@@ -109,14 +109,24 @@ class TestSecuencia(unittest.TestCase):
     def test_pulso_x5_corto_se_consume_una_vez(self):
         self.volver_noyo()
         self.scan(expect={'Y1', 'Y4'})
-        self.scan(X0=1, expect={'Y2', 'Y4'})
+        self.scan(X0=1, expect={'Y3', 'Y4'})
         self.scan(X2=1, expect={'Y5'})
 
-    def test_descarga_en_espera_mantiene_k6(self):
+    def test_descarga_en_espera_mantiene_k5(self):
         self.salida()
-        self.scan(X2=0, expect={'Y3', 'Y4'})
-        self.scan(ms=1000, expect={'Y3'})
+        self.scan(X2=0, expect={'Y2', 'Y4'})
+        self.scan(ms=1000, expect={'Y2'})
         self.scan(X5=1, expect={'Y1', 'Y4'})
+
+    def test_t5_limita_avance_y_no_recorta_presion_en_retorno(self):
+        self.plc.words['D7004'] = 20
+        self.salida()
+        self.scan(X2=0, ms=1000, expect={'Y2'})
+        self.scan(X5=1, expect={'Y1', 'Y4'})
+        self.scan(X1=0, X5=0, expect={'Y1', 'Y4'})
+        self.scan(X0=1, expect={'Y3', 'Y4'})
+        self.scan(ms=1100, expect={'Y3', 'Y4'})
+        self.scan(X2=1, expect={'Y5'})
 
     def test_x2_pegada_impide_retorno_y_cierre(self):
         self.salida()
@@ -182,14 +192,14 @@ class TestSecuencia(unittest.TestCase):
         self.scan(X0=1, X1=1, X4=1, expect=set())
         self.assertTrue(self.plc.bits['M91'])
 
-    def test_expira_recogida_y_corta_k6(self):
+    def test_expira_recogida_y_corta_k5(self):
         self.salida()
         self.scan(X2=0, ms=3000, expect=set())
         self.assertTrue(self.plc.bits['M94'])
 
     def test_no_termina_retorno_de_expulsion(self):
         self.volver_noyo()
-        self.scan(X0=1, expect={'Y2', 'Y4'})
+        self.scan(X0=1, expect={'Y3', 'Y4'})
         self.scan(ms=800, expect=set())
         self.assertTrue(self.plc.bits['M94'])
 
